@@ -2,13 +2,25 @@ import React, { Component } from 'react';
 import EventList from '../components/EventList';
 
 const events = [
-  { key: 'Alex' },
+  {
+    key: 'Alex',
+    events: [
+      {
+        key: 'Why',
+      }
+    ]
+  },
   { key: 'Jill' },
   { key: 'Lennox' },
 ];
 
 export default class HomeScreen extends Component {
   render() {
-    return <EventList events={events}/>;
+    return (
+      <EventList
+        events={events}
+        navigation={this.props.navigation}
+      />
+    )
   }
 }

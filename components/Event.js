@@ -3,7 +3,9 @@ import { Button } from 'react-native';
 
 export default class Event extends Component {
   onPress = () => {
-    alert(this.props.event.key);
+    this.props.navigation.push('EventScreen', {
+      events: this.props.event.events,
+    });
   }
 
   render() {
