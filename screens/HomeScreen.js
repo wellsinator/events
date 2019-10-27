@@ -1,23 +1,30 @@
 import React, { Component } from 'react';
 import EventList from '../components/EventList';
 
-const events = [
-  {
-    key: 'Alex',
-    events: [
-      {
-        key: 'Why',
-      }
-    ]
-  },
-  { key: 'Jill' },
-  { key: 'Lennox' },
-];
+const homeEvent = {
+  key: 'Home',
+  events: [
+    {
+      key: 'Alex',
+      events: [
+        {
+          key: 'Why',
+        }
+      ]
+    },
+    { key: 'Jill' },
+    { key: 'Lennox' },
+  ],
+};
 
 export default class HomeScreen extends Component {
+  static navigationOptions = {
+    title: homeEvent.key,
+  };
+
   render() {
     return (
-      <EventList events={events}/>
+      <EventList event={homeEvent}/>
     )
   }
 }

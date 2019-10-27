@@ -5,7 +5,7 @@ import { withNavigation } from 'react-navigation';
 class Event extends Component {
   onPress = () => {
     this.props.navigation.push('EventScreen', {
-      events: this.props.event.events,
+      event: this.props.event,
     });
   }
 
