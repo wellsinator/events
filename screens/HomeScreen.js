@@ -17,10 +17,7 @@ const events = [
 export default class HomeScreen extends Component {
   render() {
     return (
-      <EventList
-        events={events}
-        navigation={this.props.navigation}
-      />
+      <EventList events={events}/>
     )
   }
 }

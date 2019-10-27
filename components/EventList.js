@@ -7,12 +7,7 @@ export default class EventList extends Component {
     return (
       <FlatList
         data={this.props.events}
-        renderItem={({ item }) => (
-          <Event
-            event={item}
-            navigation={this.props.navigation}
-          />
-        )}
+        renderItem={({ item }) => <Event event={item}/>}
       />
     );
   }

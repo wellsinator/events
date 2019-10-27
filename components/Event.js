@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Button } from 'react-native';
+import { withNavigation } from 'react-navigation';
 
-export default class Event extends Component {
+class Event extends Component {
   onPress = () => {
     this.props.navigation.push('EventScreen', {
       events: this.props.event.events,
@@ -17,3 +18,5 @@ export default class Event extends Component {
     );
   }
 }
+
+export default withNavigation(Event);
