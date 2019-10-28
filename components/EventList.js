@@ -7,7 +7,12 @@ export default class EventList extends Component {
     return (
       <FlatList
         data={this.props.event.events || []}
-        renderItem={({ item }) => <Event event={item}/>}
+        renderItem={({ item }) => (
+          <Event
+            event={item}
+            parents={this.props.parents}
+          />
+        )}
       />
     );
   }

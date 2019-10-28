@@ -22,7 +22,10 @@ export default class HomeScreen extends Component {
 
   render() {
     return (
-      <EventList event={{ events: this.state.events }}/>
+      <EventList
+        event={{ events: this.state.events }}
+        parents={[]}
+      />
     )
   }
 }

@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { Component } from 'react';
 import { Button } from 'react-native';
 import { withNavigation } from 'react-navigation';
@@ -5,20 +6,29 @@ import { withNavigation } from 'react-navigation';
 class Event extends Component {
   onPress = () => {
     if (this.props.event.events) {
-      this.navigateToEvent();
+      this.goToEvent();
     } else {
       this.saveEvent();
     }
   }
 
-  navigateToEvent = () => {
-    this.props.navigation.push('EventScreen', {
-      event: this.props.event,
+  goToEvent = () => {
+    const { navigation, event, parents } = this.props;
+
+    navigation.push('EventScreen', {
+      event,
+      parents,
     });
   }
 
-  saveEvent = () => {
-    alert(`Added '${this.props.event.key}' event`);
+  saveEvent = async () => {
+    const { navigation, event, parents } = this.props;
+
+    await axios.post('http://localhost:3000/point', {
+      path: parents.concat(event.key),
+    });
+
+    navigation.navigate('HomeScreen');
   }
 
   render() {

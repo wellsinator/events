@@ -9,8 +9,15 @@ export default class HomeScreen extends Component {
   };
 
   render() {
-    return <EventList
-      event={this.props.navigation.getParam('event', {})}
-    />;
+    const { navigation } = this.props;
+    const event = navigation.getParam('event');
+    const parents = navigation.getParam('parents').concat(event.key);
+
+    return (
+      <EventList
+        event={event}
+        parents={parents}
+      />
+    )
   }
 }
