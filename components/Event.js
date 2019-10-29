@@ -13,19 +13,20 @@ class Event extends Component {
   }
 
   goToEvent = () => {
-    const { navigation, event, parents } = this.props;
+    const { navigation, event, path } = this.props;
 
     navigation.push('EventScreen', {
       event,
-      parents,
+      path,
     });
   }
 
   saveEvent = async () => {
-    const { navigation, event, parents } = this.props;
+    const { navigation, event, path } = this.props;
 
     await axios.post('http://localhost:3000/point', {
-      path: parents.concat(event.key),
+      date: new Date,
+      path: path.concat(event.key),
     });
 
     navigation.navigate('HomeScreen');

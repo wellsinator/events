@@ -24,7 +24,7 @@ export default class HomeScreen extends Component {
     return (
       <EventList
         event={{ events: this.state.events }}
-        parents={[]}
+        path={[]}
       />
     )
   }

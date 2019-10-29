@@ -10,7 +10,7 @@ export default class EventList extends Component {
         renderItem={({ item }) => (
           <Event
             event={item}
-            parents={this.props.parents}
+            path={this.props.path}
           />
         )}
       />

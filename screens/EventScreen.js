@@ -11,12 +11,12 @@ export default class HomeScreen extends Component {
   render() {
     const { navigation } = this.props;
     const event = navigation.getParam('event');
-    const parents = navigation.getParam('parents').concat(event.key);
+    const path = navigation.getParam('path').concat(event.key);
 
     return (
       <EventList
         event={event}
-        parents={parents}
+        path={path}
       />
     )
   }
