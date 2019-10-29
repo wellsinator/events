@@ -5,9 +5,11 @@ import { withNavigation } from 'react-navigation';
 
 class Event extends Component {
   onPress = () => {
-    if (this.props.event.events) {
+    const { event, path } = this.props;
+
+    if (event.events) {
       this.goToEvent();
-    } else {
+    } else if (path.length) {
       this.saveEvent();
     }
   }
