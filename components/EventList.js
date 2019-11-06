@@ -6,13 +6,9 @@ export default class EventList extends Component {
   render() {
     return (
       <FlatList
-        data={this.props.event.events || []}
-        renderItem={({ item }) => (
-          <Event
-            event={item}
-            path={this.props.path}
-          />
-        )}
+        data={this.props.events}
+        renderItem={({ item }) => <Event event={item}/>}
+        keyExtractor={item => item.id.toString()}
       />
     );
   }

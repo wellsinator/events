@@ -7,25 +7,22 @@ export default class HomeScreen extends Component {
     title: 'Home',
   };
 
-  componentDidMount() {
-    this.fetchEvents();
-  }
-
-  fetchEvents = async () => {
-    const { data } = await axios('http://localhost:3000/events');
-    this.setState({ events: data });
-  }
-
   state = {
-    events: [{ key: 'Loading...' }],
+    events: [],
+  }
+
+  componentDidMount() {
+    this.fetchRootEvents();
+  }
+
+  fetchRootEvents = async () => {
+    const { data } = await axios('http://localhost:3000/events/root');
+    this.setState({ events: data });
   }
 
   render() {
     return (
-      <EventList
-        event={{ events: this.state.events }}
-        path={[]}
-      />
-    )
+      <EventList events={this.state.events}/>
+    );
   }
 }

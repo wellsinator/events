@@ -5,39 +5,14 @@ import { withNavigation } from 'react-navigation';
 
 class Event extends Component {
   onPress = () => {
-    const { event, path } = this.props;
-
-    if (event.events) {
-      this.goToEvent();
-    } else if (path.length) {
-      this.saveEvent();
-    }
-  }
-
-  goToEvent = () => {
-    const { navigation, event, path } = this.props;
-
-    navigation.push('EventScreen', {
-      event,
-      path,
-    });
-  }
-
-  saveEvent = async () => {
-    const { navigation, event, path } = this.props;
-
-    await axios.post('http://localhost:3000/point', {
-      date: new Date,
-      path: path.concat(event.key),
-    });
-
-    navigation.navigate('HomeScreen');
+    const { navigation, event } = this.props;
+    navigation.push('EventScreen', { event });
   }
 
   render() {
     return (
       <Button
-        title={this.props.event.key}
+        title={this.props.event.name}
         onPress={this.onPress}
       />
     );
