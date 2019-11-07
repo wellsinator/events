@@ -6,8 +6,10 @@ import Dialog from "react-native-dialog";
 
 export default class EventScreen extends Component {
   static navigationOptions = ({ navigation }) => {
+    const event = navigation.getParam('event');
+
     return {
-      title: navigation.getParam('event').name,
+      title: event ? event.name : 'Home',
       headerRight: () => (
         <Button
           onPress={navigation.getParam('showDialog')}
@@ -25,14 +27,8 @@ export default class EventScreen extends Component {
   };
 
   componentDidMount() {
-    const { navigation } = this.props;
-    const event = navigation.getParam('event');
-
-    this.props.navigation.setParams({
-      showDialog: this.showDialog,
-    });
-
-    this.fetchEvents(event);
+    this.props.navigation.setParams({ showDialog: this.showDialog });
+    this.fetchEvents();
   }
 
   showDialog = () => {
@@ -40,10 +36,20 @@ export default class EventScreen extends Component {
   };
 
   hideDialog = () => {
-    this.setState({ dialogVisible: false });
+    this.setState({
+      dialogVisible: false,
+      name: '',
+    });
   };
 
-  fetchEvents = async (event) => {
+  fetchEvents = async () => {
+    const event = this.props.navigation.getParam('event');
+    event ? this.fetchChildEvents(event) : this.fetchRootEvents();
+  }
+
+  fetchChildEvents = async (event) => {
+    this.setState({ showPostPointButton: false });
+
     const { data } = await axios.get(`http://localhost:3000/events/${event.id}/children`);
 
     if (data.length) {
@@ -53,33 +59,38 @@ export default class EventScreen extends Component {
     }
   }
 
+  fetchRootEvents = async () => {
+    const { data } = await axios('http://localhost:3000/events/root');
+    this.setState({ events: data });
+  }
+
   postEvent = async () => {
     const { name } = this.state;
 
-    if (name === '') {
-      this.hideDialog();
-    } else {
+    if (name !== '') {
       const event = this.props.navigation.getParam('event');
-
-      await axios.post('http://localhost:3000/events', { name, event });
-      this.setState({ name: '' });
-      this.hideDialog();
+      await axios.post('http://localhost:3000/events', { event, name });
+      await this.fetchEvents();
     }
+
+    this.hideDialog();
   }
 
   postPoint = async () => {
     const { navigation } = this.props;
-    const event = this.props.navigation.getParam('event');
+    const event = navigation.getParam('event');
 
     await axios.post('http://localhost:3000/points', { event });
-
-    navigation.navigate('HomeScreen');
+    navigation.popToTop();
   }
 
   render() {
-    const eventsView = (
+    const eventsView = <EventList events={this.state.events}/>;
+    const postPointButton = <Button onPress={this.postPoint} title="Add Point!"/>;
+
+    return (
       <View>
-        <EventList events={this.state.events}/>
+        {this.state.showPostPointButton ? postPointButton : eventsView}
         <Dialog.Container visible={this.state.dialogVisible}>
           <Dialog.Title>New Event Name</Dialog.Title>
           <Dialog.Input
@@ -92,14 +103,5 @@ export default class EventScreen extends Component {
         </Dialog.Container>
       </View>
     );
-
-    const postPointButton = (
-      <Button
-        onPress={this.postPoint}
-        title="Add Point!"
-      />
-    );
-
-    return this.state.showPostPointButton ? postPointButton : eventsView;
   }
 }
