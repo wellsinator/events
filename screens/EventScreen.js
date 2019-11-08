@@ -92,7 +92,7 @@ export default class EventScreen extends Component {
   }
 
   render() {
-    const eventsView = <EventList events={this.state.events}/>;
+    const eventList = <EventList events={this.state.events}/>;
     const postPointView = (
       <View>
         <DateTimePicker
@@ -104,20 +104,23 @@ export default class EventScreen extends Component {
        <Button onPress={this.postPoint} title="Add Point!"/>
       </View>
     );
+    const dialog = (
+      <Dialog.Container visible={this.state.dialogVisible}>
+        <Dialog.Title>New Event Name</Dialog.Title>
+        <Dialog.Input
+          autoFocus={true}
+          onChangeText={name => this.setState({ name })}
+          value={this.state.name}
+        />
+        <Dialog.Button label="Cancel" onPress={this.hideDialog}/>
+        <Dialog.Button label="Submit" onPress={this.postEvent}/>
+      </Dialog.Container>
+    );
 
     return (
       <View>
-        {this.state.showPostPointView ? postPointView : eventsView}
-        <Dialog.Container visible={this.state.dialogVisible}>
-          <Dialog.Title>New Event Name</Dialog.Title>
-          <Dialog.Input
-            autoFocus={true}
-            onChangeText={name => this.setState({ name })}
-            value={this.state.name}
-          />
-          <Dialog.Button label="Cancel" onPress={this.hideDialog}/>
-          <Dialog.Button label="Submit" onPress={this.postEvent}/>
-        </Dialog.Container>
+        {this.state.showPostPointView ? postPointView : eventList}
+        {dialog}
       </View>
     );
   }
