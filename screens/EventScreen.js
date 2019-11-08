@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import EventList from '../components/EventList';
 import { Button, View } from 'react-native';
 import Dialog from "react-native-dialog";
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 export default class EventScreen extends Component {
   static navigationOptions = ({ navigation }) => {
@@ -21,9 +22,10 @@ export default class EventScreen extends Component {
 
   state = {
     events: [],
+    date: new Date(),
     dialogVisible: false,
     name: '',
-    showPostPointButton: false,
+    showPostPointView: false,
   };
 
   componentDidMount() {
@@ -42,20 +44,25 @@ export default class EventScreen extends Component {
     });
   };
 
+  setDate = (_, date) => {
+    date = date || this.state.date;
+    this.setState({ date });
+  }
+
   fetchEvents = async () => {
     const event = this.props.navigation.getParam('event');
     event ? this.fetchChildEvents(event) : this.fetchRootEvents();
   }
 
   fetchChildEvents = async (event) => {
-    this.setState({ showPostPointButton: false });
+    this.setState({ showPostPointView: false });
 
     const { data } = await axios.get(`http://localhost:3000/events/${event.id}/children`);
 
     if (data.length) {
       this.setState({ events: data });
     } else {
-      this.setState({ showPostPointButton: true });
+      this.setState({ showPostPointView: true });
     }
   }
 
@@ -80,17 +87,26 @@ export default class EventScreen extends Component {
     const { navigation } = this.props;
     const event = navigation.getParam('event');
 
-    await axios.post('http://localhost:3000/points', { event });
+    await axios.post('http://localhost:3000/points', { event, date: this.state.date });
     navigation.popToTop();
   }
 
   render() {
     const eventsView = <EventList events={this.state.events}/>;
-    const postPointButton = <Button onPress={this.postPoint} title="Add Point!"/>;
+    const postPointView = (
+      <View>
+        <Button onPress={this.postPoint} title="Add Point!"/>
+        <DateTimePicker
+          value={this.state.date}
+          display="default"
+          onChange={this.setDate}
+        />
+      </View>
+    );
 
     return (
       <View>
-        {this.state.showPostPointButton ? postPointButton : eventsView}
+        {this.state.showPostPointView ? postPointView : eventsView}
         <Dialog.Container visible={this.state.dialogVisible}>
           <Dialog.Title>New Event Name</Dialog.Title>
           <Dialog.Input
