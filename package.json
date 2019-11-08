@@ -2,7 +2,8 @@
   "scripts": {
     "start": "react-native start",
     "android": "react-native run-android",
-    "ios": "react-native run-ios",
+    "ios": "react-native run-ios --simulator='iPhone 11'",
+    "log-ios": "log stream --predicate '(processImagePath contains \"events\") and senderImageUUID == processImageUUID'",
     "web": "expo start --web",
     "postinstall": "jetify"
   },

@@ -95,12 +95,13 @@ export default class EventScreen extends Component {
     const eventsView = <EventList events={this.state.events}/>;
     const postPointView = (
       <View>
-        <Button onPress={this.postPoint} title="Add Point!"/>
         <DateTimePicker
           value={this.state.date}
+          mode="time"
           display="default"
           onChange={this.setDate}
         />
+       <Button onPress={this.postPoint} title="Add Point!"/>
       </View>
     );
 
